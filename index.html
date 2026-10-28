@@ -166,7 +166,7 @@ main,.site-head,.site-foot{position:relative;z-index:1}.site-head{height:58px;di
     requestAnimationFrame(draw);
   }
   resize();addEventListener('resize',resize,{passive:true});addEventListener('pointermove',e=>{mouse.x=e.clientX;mouse.y=e.clientY},{passive:true});addEventListener('pointerleave',()=>{mouse.x=-9999;mouse.y=-9999});
-  if(!reduce && ctx)requestAnimationFrame(draw);else{ctx.clearRect(0,0,w,h);draw=()=>{};}
+  if(!reduce && ctx){requestAnimationFrame(draw);}else{if(ctx)ctx.clearRect(0,0,w,h);draw=()=>{};}
   const gearA=document.getElementById('gear-main'),gearB=document.getElementById('gear-inner'),readout=document.getElementById('scroll-rate');
   function scrollLoop(t){const dt=Math.max(1,t-lastT);scrollY=window.scrollY;const raw=(scrollY-lastY)/dt;velocity=velocity*.72+raw*100*.28;lastY=scrollY;lastT=t;if(!reduce){gearA.style.transform=`rotate(${scrollY*.13+velocity*1.7}deg)`;gearB.style.transform=`rotate(${-scrollY*.22-velocity*2.4}deg)`;}readout.textContent='SCROLL Δ '+String(Math.round(Math.abs(velocity)*10)).padStart(3,'0');requestAnimationFrame(scrollLoop)}requestAnimationFrame(scrollLoop);
   const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');observer.unobserve(e.target)}}),{threshold:.12});document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
